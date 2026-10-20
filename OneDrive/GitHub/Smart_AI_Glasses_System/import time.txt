@@ -1,0 +1,208 @@
+import time
+
+try:
+    import cv2
+except ImportError:
+    cv2 = None
+
+try:
+    from deepface import DeepFace
+except ImportError:
+    DeepFace = None
+
+
+class EmotionAnalyzer:
+    def __init__(self):
+        self.happy_words = ["happy", "good", "great", "love", "nice", "سعيد", "فرحان", "مبسوط", "تمام"]
+        self.sad_words = ["sad", "bad", "tired", "cry", "حزين", "تعبان", "زعلان", "مشكلة"]
+        self.angry_words = ["angry", "mad", "hate", "غاضب", "معصب", "متوتر"]
+        self.fear_words = ["fear", "afraid", "scared", "worried", "خائف", "قلقان", "خوف"]
+
+    def analyze(self, text: str) -> str:
+        text = text.lower().strip()
+
+        if not text:
+            return "No text entered."
+
+        if any(word in text for word in self.happy_words):
+            return "Happy / سعيد"
+
+        if any(word in text for word in self.sad_words):
+            return "Sad / حزين"
+
+        if any(word in text for word in self.angry_words):
+            return "Angry / غاضب"
+
+        if any(word in text for word in self.fear_words):
+            return "Fear / خوف أو قلق"
+
+        return "Normal / Neutral"
+
+    def analyze_menu(self):
+        print("\n===== Emotion Analysis =====")
+        text = input("Enter text: ").strip()
+        result = self.analyze(text)
+        print("Emotion:", result)
+
+
+def emotion_details(emotion):
+    if emotion == "happy":
+        return "سعيد / مرتاح", "الشخص يبدو سعيد أو مرتاح"
+    elif emotion == "sad":
+        return "حزين / متعب", "الشخص يبدو حزين أو متعب"
+    elif emotion == "angry":
+        return "غاضب / متوتر", "الشخص يبدو غاضب أو متوتر"
+    elif emotion == "fear":
+        return "خائف / قلق", "الشخص يبدو خائف أو قلق"
+    elif emotion == "surprise":
+        return "متفاجئ", "الشخص يبدو متفاجئ"
+    elif emotion == "disgust":
+        return "غير مرتاح", "الشخص يبدو غير مرتاح"
+    else:
+        return "طبيعي / عادي", "الشخص يبدو طبيعي أو عادي"
+
+
+def start_face_emotion_camera():
+    if cv2 is None:
+        print("OpenCV not installed.")
+        print("Run: python -m pip install opencv-contrib-python")
+        return
+
+    if DeepFace is None:
+        print("DeepFace not installed.")
+        print("Run: python -m pip install deepface")
+        return
+
+    cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+
+    if not cap.isOpened():
+        cap = cv2.VideoCapture(0)
+
+    if not cap.isOpened():
+        print("Camera not found.")
+        return
+
+    face_cascade = cv2.CascadeClassifier(
+        cv2.data.haarcascades + "haarcascade_frontalface_default.xml"
+    )
+
+    print("\n===== Live Face Emotion Camera =====")
+    print("Stand in front of camera.")
+    print("Press Q or ESC to exit.")
+
+    last_analysis_time = 0
+    current_emotion = "neutral"
+    current_confidence = 0
+
+    while True:
+        ret, frame = cap.read()
+
+        if not ret or frame is None:
+            print("Cannot read camera.")
+            break
+
+        frame = cv2.flip(frame, 1)
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+        faces = face_cascade.detectMultiScale(
+            gray,
+            scaleFactor=1.2,
+            minNeighbors=5,
+            minSize=(80, 80)
+        )
+
+        if len(faces) == 0:
+            cv2.putText(
+                frame,
+                "No face detected",
+                (20, 40),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                0.8,
+                (0, 0, 255),
+                2
+            )
+
+        for (x, y, w, h) in faces:
+            face_img = frame[y:y + h, x:x + w]
+            now = time.time()
+
+            if now - last_analysis_time >= 1.5:
+                try:
+                    result = DeepFace.analyze(
+                        img_path=face_img,
+                        actions=["emotion"],
+                        enforce_detection=False,
+                        silent=True
+                    )
+
+                    if isinstance(result, list):
+                        result = result[0]
+
+                    current_emotion = result.get("dominant_emotion", "neutral")
+                    emotion_data = result.get("emotion", {})
+                    current_confidence = emotion_data.get(current_emotion, 0)
+
+                    arabic_emotion, message = emotion_details(current_emotion)
+
+                    print("--------------------------")
+                    print("Face Emotion:", arabic_emotion)
+                    print("Confidence:", round(current_confidence, 2))
+                    print("Details:", message)
+
+                except Exception as error:
+                    print("Emotion analysis error:", error)
+
+                last_analysis_time = now
+
+            arabic_emotion, message = emotion_details(current_emotion)
+
+            if current_emotion == "neutral":
+                color = (0, 255, 0)
+            elif current_emotion in ["happy", "surprise"]:
+                color = (0, 255, 255)
+            elif current_emotion in ["sad", "fear"]:
+                color = (255, 0, 0)
+            else:
+                color = (0, 0, 255)
+
+            cv2.rectangle(frame, (x, y), (x + w, y + h), color, 2)
+
+            cv2.putText(
+                frame,
+                f"Emotion: {current_emotion}",
+                (x, y - 10),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                0.75,
+                color,
+                2
+            )
+
+            cv2.putText(
+                frame,
+                f"Confidence: {current_confidence:.1f}%",
+                (x, y + h + 25),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                0.65,
+                color,
+                2
+            )
+
+        cv2.putText(
+            frame,
+            "Live Face Emotion | Press Q to exit",
+            (20, 35),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.75,
+            (0, 255, 0),
+            2
+        )
+
+        cv2.imshow("Smart AI Glasses - Face Emotion", frame)
+
+        key = cv2.waitKey(1) & 0xFF
+
+        if key == ord("q") or key == 27:
+            break
+
+    cap.release()
+    cv2.destroyAllWindows()

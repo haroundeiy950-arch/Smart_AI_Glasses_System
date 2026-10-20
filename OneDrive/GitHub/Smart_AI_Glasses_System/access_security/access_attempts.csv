@@ -1,0 +1,21 @@
+date_time,result,person,reason,image_path
+2026-07-11 11:16:59,DENIED,Unknown,The detected face is not the system owner.,C:\Users\user\OneDrive\GitHub\Smart_AI_Glasses_System\access_security\denied_images\20260711_111659_006625_DENIED_Unknown.jpg
+2026-07-11 11:18:02,ALLOWED,haroun,Fingerprint and owner face verified.,C:\Users\user\OneDrive\GitHub\Smart_AI_Glasses_System\access_security\successful_images\20260711_111802_267383_ALLOWED_haroun.jpg
+2026-07-11 11:37:55,ALLOWED,haroun,Fingerprint and owner face verified.,C:\Users\user\OneDrive\GitHub\Smart_AI_Glasses_System\access_security\successful_images\20260711_113755_066874_ALLOWED_haroun.jpg
+2026-07-19 15:44:48,DENIED,haroun,The detected face is not the system owner.,C:\Users\user\OneDrive\GitHub\Smart_AI_Glasses_System\access_security\denied_images\20260719_154448_800812_DENIED_haroun.jpg
+2026-07-19 16:01:51,DENIED,haroun,The detected face is not the system owner.,C:\Users\user\OneDrive\GitHub\Smart_AI_Glasses_System\access_security\denied_images\20260719_160151_706000_DENIED_haroun.jpg
+2026-07-19 16:03:23,DENIED,Unknown,Fingerprint or Windows Hello verification failed.,C:\Users\user\OneDrive\GitHub\Smart_AI_Glasses_System\access_security\denied_images\20260719_160323_802571_DENIED_Unknown.jpg
+2026-07-19 16:03:46,DENIED,Unknown,Fingerprint or Windows Hello verification failed.,C:\Users\user\OneDrive\GitHub\Smart_AI_Glasses_System\access_security\denied_images\20260719_160346_780712_DENIED_Unknown.jpg
+2026-07-19 16:04:05,DENIED,Unknown,Fingerprint or Windows Hello verification failed.,C:\Users\user\OneDrive\GitHub\Smart_AI_Glasses_System\access_security\denied_images\20260719_160405_280634_DENIED_Unknown.jpg
+2026-07-19 16:07:19,ALLOWED,haroun,Fingerprint and owner face verified.,C:\Users\user\OneDrive\GitHub\Smart_AI_Glasses_System\access_security\successful_images\20260719_160719_456424_ALLOWED_haroun.jpg
+2026-08-23 15:46:23,DENIED,Unknown,Fingerprint or Windows Hello verification failed.,C:\Users\user\OneDrive\GitHub\Smart_AI_Glasses_System\access_security\denied_images\20260823_154623_045326_DENIED_Unknown.jpg
+2026-08-23 15:48:29,DENIED,Unknown,Fingerprint or Windows Hello verification failed.,C:\Users\user\OneDrive\GitHub\Smart_AI_Glasses_System\access_security\denied_images\20260823_154829_387186_DENIED_Unknown.jpg
+2026-08-23 15:50:29,DENIED,Unknown,Fingerprint or Windows Hello verification failed.,C:\Users\user\OneDrive\GitHub\Smart_AI_Glasses_System\access_security\denied_images\20260823_155029_162303_DENIED_Unknown.jpg
+2026-08-23 15:51:11,DENIED,Unknown,Fingerprint or Windows Hello verification failed.,C:\Users\user\OneDrive\GitHub\Smart_AI_Glasses_System\access_security\denied_images\20260823_155111_065944_DENIED_Unknown.jpg
+2026-08-23 15:52:28,DENIED,Unknown,Fingerprint or Windows Hello verification failed.,C:\Users\user\OneDrive\GitHub\Smart_AI_Glasses_System\access_security\denied_images\20260823_155228_246040_DENIED_Unknown.jpg
+2026-08-23 15:52:47,DENIED,Unknown,Fingerprint or Windows Hello verification failed.,C:\Users\user\OneDrive\GitHub\Smart_AI_Glasses_System\access_security\denied_images\20260823_155246_983943_DENIED_Unknown.jpg
+2026-08-23 15:53:10,DENIED,Unknown,Fingerprint or Windows Hello verification failed.,C:\Users\user\OneDrive\GitHub\Smart_AI_Glasses_System\access_security\denied_images\20260823_155310_195535_DENIED_Unknown.jpg
+2026-08-23 15:53:50,DENIED,Unknown,Fingerprint or Windows Hello verification failed.,C:\Users\user\OneDrive\GitHub\Smart_AI_Glasses_System\access_security\denied_images\20260823_155350_952204_DENIED_Unknown.jpg
+2026-08-23 15:57:21,DENIED,Unknown,Fingerprint or Windows Hello verification failed.,C:\Users\user\OneDrive\GitHub\Smart_AI_Glasses_System\access_security\denied_images\20260823_155721_132727_DENIED_Unknown.jpg
+2026-08-23 16:12:33,DENIED,Unknown,Fingerprint or Windows Hello verification failed.,C:\Users\user\OneDrive\GitHub\Smart_AI_Glasses_System\access_security\denied_images\20260823_161232_899551_DENIED_Unknown.jpg
+2026-10-21 00:26:03,DENIED,Unknown,Fingerprint or Windows Hello verification failed.,

@@ -1,0 +1,130 @@
+try:
+    import cv2
+except ImportError:
+    cv2 = None
+
+
+class EmotionAnalyzer:
+    def emotion_menu(self):
+        start_face_emotion_camera()
+
+    def analyze(self, text: str) -> str:
+        text = text.lower().strip()
+
+        if not text:
+            return "No text entered."
+
+        if "happy" in text or "سعيد" in text or "فرحان" in text:
+            return "Happy / سعيد"
+
+        if "sad" in text or "حزين" in text or "تعبان" in text:
+            return "Sad / حزين"
+
+        if "angry" in text or "غاضب" in text or "متوتر" in text:
+            return "Angry / غاضب"
+
+        return "Normal / Neutral"
+
+    def analyze_menu(self):
+        text = input("Enter text: ").strip()
+        print("Emotion:", self.analyze(text))
+
+
+def start_face_emotion_camera():
+    if cv2 is None:
+        print("OpenCV not installed.")
+        print("Run: python -m pip install opencv-contrib-python")
+        return
+
+    cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+
+    if not cap.isOpened():
+        cap = cv2.VideoCapture(0)
+
+    if not cap.isOpened():
+        print("Camera not found.")
+        return
+
+    face_cascade = cv2.CascadeClassifier(
+        cv2.data.haarcascades + "haarcascade_frontalface_default.xml"
+    )
+
+    print("\n===== Live Face Status Camera =====")
+    print("Press Q or ESC to exit.")
+    print("Note: This version detects face only. Deep emotion needs DeepFace later.")
+
+    while True:
+        ret, frame = cap.read()
+
+        if not ret or frame is None:
+            print("Cannot read camera.")
+            break
+
+        frame = cv2.flip(frame, 1)
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+        faces = face_cascade.detectMultiScale(
+            gray,
+            scaleFactor=1.2,
+            minNeighbors=5,
+            minSize=(80, 80)
+        )
+
+        if len(faces) == 0:
+            cv2.putText(
+                frame,
+                "No face detected",
+                (20, 40),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                0.8,
+                (0, 0, 255),
+                2
+            )
+        else:
+            print("Face detected: الشخص ظاهر أمام الكاميرا - الحالة العامة طبيعية")
+
+        for (x, y, w, h) in faces:
+            status = "Normal / Neutral"
+            details = "Face detected - person seems normal"
+
+            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+
+            cv2.putText(
+                frame,
+                status,
+                (x, y - 10),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                0.75,
+                (0, 255, 0),
+                2
+            )
+
+            cv2.putText(
+                frame,
+                details,
+                (x, y + h + 25),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                0.6,
+                (255, 255, 255),
+                2
+            )
+
+        cv2.putText(
+            frame,
+            "Live Face Status | Press Q to exit",
+            (20, 35),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.75,
+            (0, 255, 0),
+            2
+        )
+
+        cv2.imshow("Smart AI Glasses - Face Status", frame)
+
+        key = cv2.waitKey(1) & 0xFF
+
+        if key == ord("q") or key == 27:
+            break
+
+    cap.release()
+    cv2.destroyAllWindows()
